@@ -55,8 +55,8 @@ namespace QuizTime
                 if (question.CheckAnswer()) { numCorrect += 1; }
             }
             string percent = ((numCorrect / Questions.Count) * 100).ToString();
-         
-            Console.WriteLine("You scored " + numCorrect.ToString() + " out of " + 
+
+            Console.WriteLine("You scored " + numCorrect.ToString() + " out of " +
                 Questions.Count.ToString() + ": " + percent + "%");
             Console.ReadLine();
         }
@@ -134,7 +134,7 @@ namespace QuizTime
             while (response != "x")
             {
                 response = Console.ReadLine();
-                responses.Add(response);              
+                responses.Add(response);
             }
             responses.Sort();
             bool result = true;
@@ -167,4 +167,67 @@ namespace QuizTime
         }
     }
 
+    public class ShortAnswer : Question
+    {
+        public string Answer { get; set; }
+
+        public ShortAnswer(string query, string answer) : base(query)
+        {
+            Query = query;
+            Answer = answer;
+        }
+
+        public ShortAnswer(string query) : this(query, "") { }
+
+        public override bool CheckAnswer()
+        {
+            Console.WriteLine("Answer the question in 80 characters or less and press return.");
+            string response = Console.ReadLine(); 
+            return response.Length < 80;
+        }
+    }
+
+    public class LinearAnswer : Question
+    {
+        public string Answer { get; set; }
+        public int Min { get; set; }
+        public int Max { get; set; }
+
+        public LinearAnswer(string query, string answer, int min, int max) : base(query)
+        {
+            Query = query;
+            Answer = answer;
+            Min = min;
+            Max = max;
+        }
+
+        public LinearAnswer(string query, int min, int max) : this(query, "", min, max) { }
+
+        public override bool CheckAnswer()
+        {
+            Console.WriteLine("Enter a number between " + Min + " and " + Max);
+            string response = Console.ReadLine();
+            return (Min <= int.Parse(response) && int.Parse(response) <= Max);   
+        }
+    }
+
+    public class LongAnswer : Question
+    {
+        public string Answer { get; set; }
+
+        public LongAnswer(string query, string answer) : base(query)
+        {
+            Query = query;
+            Answer = answer;
+        }
+
+        public LongAnswer(string query) : this(query, "") { }
+
+        public override bool CheckAnswer()
+        {
+            Console.WriteLine("Answer the question in 80 characters or less and press return.");
+            string response = Console.ReadLine();
+            return response.Length < 500;
+        }
+    }
 }
