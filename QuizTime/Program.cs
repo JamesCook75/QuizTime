@@ -8,7 +8,7 @@ namespace QuizTime
         static void Main(string[] args)
         {
             Quiz quiz1 = new Quiz("LC101");
-            List<string> q2answer = new List<string> { "a", "b" };
+            List<string> q2answer = new List<string> { "a", "b", "x" };
             MultiChoice q1 = new MultiChoice("For what could you use a for loop? \nA. Print to screen \nB. Assign a " +
                 "variable \nC. Go through a series of list items.", "c");
             Checkbox q2 = new Checkbox("What languages have we worked with so far: \nA. Python \nB. HTML " +
@@ -18,6 +18,7 @@ namespace QuizTime
             quiz1.AddQuestion(q2);
             quiz1.AddQuestion(q3);
             quiz1.TakeQuiz();
+            Console.ReadLine();
 
 
 
@@ -83,6 +84,7 @@ namespace QuizTime
         {
             Console.WriteLine(this.Query);
         }
+
     }
 
     public class MultiChoice : Question
@@ -101,6 +103,16 @@ namespace QuizTime
             string response = Console.ReadLine();
             if (response == Answer) { return true; }
             else { return false; }
+        }
+
+
+
+        // override object.GetHashCode
+        public override int GetHashCode()
+        {
+            // TODO: write your implementation of GetHashCode() here
+            throw new NotImplementedException();
+            return base.GetHashCode();
         }
     }
 
@@ -124,10 +136,16 @@ namespace QuizTime
                 response = Console.ReadLine();
                 responses.Add(response);              
             }
-
-            if (responses == Answer) { return true; }
-            else { return false; }
+            responses.Sort();
+            bool result = true;
+            for (int i = 0; i < Answer.Count; i++)
+            {
+                if (responses[i] == Answer[i]) { result = result && true; }
+                else { result = result && false; }
+            }
+            return result;
         }
+
     }
 
     public class TrueFalse : Question
